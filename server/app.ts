@@ -1,14 +1,19 @@
 import express from "express";
-import connectDB from "./config/db"; // DB connection
-import inventoryRoutes from "./routes/inventoryRoutes"; // Inventory routes
+import cors from "cors"; // Import CORS middleware
+import connectDB from "./config/db";
+import inventoryRoutes from "./routes/inventoryRoutes";
 import dotenv from "dotenv";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const app = express();
-connectDB(); // Connect to MongoDB
+connectDB();
 
-app.use(express.json()); // Middleware to parse JSON requests
+// Use CORS to allow requests from all origins
+app.use(cors());
+
+// Middleware to parse JSON requests
+app.use(express.json());
 
 // Register inventory routes
 app.use("/api/inventory", inventoryRoutes);
