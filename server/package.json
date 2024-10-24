@@ -2,10 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "inventory-app-backend",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpile-only app.ts"
+    "dev": "ts-node-dev --respawn --transpile-only app.ts",
+    "build":"tsc"
   },
   "author": "shubham",
   "license": "ISC",
