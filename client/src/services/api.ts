@@ -1,7 +1,9 @@
 import axios from "axios";
 import { Product } from "../types";
 
-const API_URL = "http://localhost:5017/api/inventory"; // Your API base URL
+const BASE_URL = "https://inventory-assignment.onrender.com";
+
+const API_URL = `${BASE_URL}/api/inventory`; // Your API base URL
 
 // Function to fetch products from the backend API
 export const fetchProductsFromAPI = async () => {

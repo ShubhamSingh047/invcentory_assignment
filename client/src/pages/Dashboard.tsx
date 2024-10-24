@@ -21,8 +21,9 @@ const DashboardPage: React.FC = () => {
     (state: RootState) => state.modal
   );
 
+  // Fetch products on mount
   useEffect(() => {
-    dispatch(fetchProducts()); // Fetch products on mount
+    dispatch(fetchProducts());
   }, [dispatch]);
 
   if (loading) return <p className="text-center text-white">Loading...</p>;
