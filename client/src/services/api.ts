@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Product } from "../types";
 
 const API_URL = "http://localhost:5017/api/inventory"; // Your API base URL
 
@@ -44,6 +45,26 @@ export const syncInventory = async (role: string) => {
     return response.data;
   } catch (error) {
     console.error("Error syncing inventory:", error);
+    throw error;
+  }
+};
+
+// Update a product by ID with role in headers
+export const updateProduct = async (
+  id: string,
+  updatedProduct: Product,
+  role: string
+) => {
+  try {
+    const response = await axios.put(`${API_URL}/${id}`, updatedProduct, {
+      headers: {
+        "Content-Type": "application/json",
+        "User-Role": role, // Send role in the header
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Failed to update product:", error);
     throw error;
   }
 };

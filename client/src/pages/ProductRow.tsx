@@ -4,8 +4,9 @@ import { RootState, AppDispatch } from "../redux/store";
 import { openModal } from "../redux/slices/modalSlice";
 import { deleteProduct } from "../services/api"; // Import the delete function
 import { deleteProductFromState } from "../redux/slices/productSlice"; // Import the action
+import { showSuccessToast, showErrorToast } from "../component/ToastService"; // Import ToastService
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
-// import { MdDeleteForever } from "react-icons/md";
+import { Product } from "../types";
 
 interface ProductRowProps {
   product: Product;
@@ -19,7 +20,7 @@ const ProductRow: React.FC<ProductRowProps> = ({ product }) => {
   const role = useSelector((state: RootState) => state.auth.role);
 
   const handleEdit = () => {
-    dispatch(openModal(product));
+    dispatch(openModal(product)); // Open the edit modal
   };
 
   const handleDelete = async () => {
@@ -29,13 +30,16 @@ const ProductRow: React.FC<ProductRowProps> = ({ product }) => {
 
     try {
       setIsDeleting(true); // Start loading state
-      await deleteProduct(product._id, role); // Call the DELETE API
-      console.log("Product deleted successfully!");
+      await deleteProduct(product._id, "user"); // Call the DELETE API
 
-      // Dispatch the action to remove the product from the store
+      // Dispatch action to remove the product from the Redux store
       dispatch(deleteProductFromState(product._id));
+
+      // Show success toast
+      showSuccessToast("Product deleted successfully!");
     } catch (error) {
-      alert(`Failed to delete product. ${error}`);
+      // Show error toast
+      showErrorToast(`Failed to delete product. Please try again.`);
     } finally {
       setIsDeleting(false); // End loading state
     }

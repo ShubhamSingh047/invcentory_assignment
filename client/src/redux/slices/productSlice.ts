@@ -1,16 +1,7 @@
 // redux/slices/productSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { fetchProductsFromAPI } from "../../services/api"; // Import API function
-
-// Define Product interface
-interface Product {
-  _id: string;
-  name: string;
-  category: string;
-  price: number;
-  quantity: number;
-  value: number;
-}
+import { Product } from "../../types"; // Import Product type
 
 // Define Product slice state
 interface ProductState {
@@ -37,6 +28,16 @@ const productSlice = createSlice({
     deleteProductFromState(state, action: PayloadAction<string>) {
       state.products = state.products.filter((p) => p._id !== action.payload);
     },
+    // Action to update a product in state
+    updateProductInState(state, action: PayloadAction<Product>) {
+      const updatedProduct = action.payload;
+      const index = state.products.findIndex(
+        (p) => p._id === updatedProduct._id
+      );
+      if (index !== -1) {
+        state.products[index] = updatedProduct; // Update the product
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -53,6 +54,7 @@ const productSlice = createSlice({
   },
 });
 
-// Export the delete action and the reducer
-export const { deleteProductFromState } = productSlice.actions;
+// Export the actions and the reducer
+export const { deleteProductFromState, updateProductInState } =
+  productSlice.actions;
 export default productSlice.reducer;

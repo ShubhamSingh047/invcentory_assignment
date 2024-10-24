@@ -1,54 +1,57 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../redux/store"; // Import RootState & AppDispatch types
-import { syncInventory } from "../services/api"; // Import the sync function
-import { fetchProducts } from "../redux/slices/productSlice"; // Import fetchProducts thunk
+import { RootState, AppDispatch } from "../redux/store";
+import { syncInventory } from "../services/api"; // API call to sync inventory
+import { fetchProducts } from "../redux/slices/productSlice"; // Refresh products after sync
+import { toast } from "react-toastify"; // Toast methods
+import { showSuccessToast, showErrorToast } from "../component/ToastService"; // ToastService
 
 const SyncMain: React.FC = () => {
-  const [message, setMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-
+  const [loading, setLoading] = useState<boolean>(false); // Track loading state
   const role = useSelector((state: RootState) => state.auth.role); // Get role from Redux
-  const dispatch = useDispatch<AppDispatch>(); // Correctly typed dispatch
+  const dispatch = useDispatch<AppDispatch>(); // Set up dispatch
 
   const handleSyncInventory = async () => {
+    const loadingToastId = toast.loading("Syncing inventory..."); // Start loading toast
+
     try {
-      setLoading(true);
-      setMessage(null);
+      setLoading(true); // Start loading state
+      await syncInventory(role); // Sync inventory API call
 
-      // Call the sync inventory API with role authorization
-      await syncInventory(role);
-      setMessage("Inventory synced successfully!");
+      // Close the loading toast
+      toast.dismiss(loadingToastId);
 
-      // After sync, re-fetch products to reflect changes
+      // Show success toast notification
+      showSuccessToast("Inventory synced successfully!");
+
+      // Refresh product list
       dispatch(fetchProducts());
     } catch (error) {
       console.error("Error syncing inventory:", error);
-      setMessage("Error: Failed to sync inventory");
+
+      // Close the loading toast
+      toast.dismiss(loadingToastId);
+
+      // Show error toast notification
+      showErrorToast("Failed to sync inventory. Please try again.");
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading state
     }
   };
 
-  if (role !== "admin") return null; // Only allow admin to sync
-
   return (
-    <div className="sync-main p-8">
-      <h1 className="text-3xl font-bold mb-4" onClick={handleSyncInventory}>
+    <div
+      className="sync-main p-8"
+      style={{ visibility: role === "admin" ? "visible" : "hidden" }} // Control visibility
+    >
+      <h1
+        className={`text-3xl font-bold mb-4 cursor-pointer ${
+          loading ? "opacity-50" : ""
+        }`} // Slightly dim the text during loading
+        onClick={!loading ? handleSyncInventory : undefined} // Prevent clicks while loading
+      >
         Sync Inventory 🔄
       </h1>
-
-      {loading && <p className="mt-4 text-white">Syncing...</p>}
-
-      {message && (
-        <p
-          className={`mt-4 ${
-            message.startsWith("Inventory") ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {message}
-        </p>
-      )}
     </div>
   );
 };

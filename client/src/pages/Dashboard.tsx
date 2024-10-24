@@ -29,10 +29,11 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="p-8">
-      <RoleToggleSwitch />
-
-      <SyncMain />
-      <h1 className="text-3xl font-bold mb-8">Inventory Stats</h1>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <SyncMain />
+        <RoleToggleSwitch />
+      </div>
+      <h1 style={{ font: "bold", fontSize: "2rem" }}>Inventory Stats</h1>
 
       <div className="stats-container">
         <StatCard
