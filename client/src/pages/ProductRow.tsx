@@ -10,6 +10,8 @@ import { Product } from "../types";
 
 interface ProductRowProps {
   product: Product;
+  role: "admin" | "user";
+  onEdit: () => void;
 }
 
 const ProductRow: React.FC<ProductRowProps> = ({ product }) => {
