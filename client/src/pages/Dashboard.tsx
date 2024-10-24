@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { RootState, AppDispatch } from "../redux/store";
 import { fetchProducts } from "../redux/slices/productSlice";
 import { openModal, closeModal } from "../redux/slices/modalSlice"; // Import closeModal here
@@ -12,7 +11,6 @@ import { MdRemoveShoppingCart, MdCurrencyExchange } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
 import RoleToggleSwitch from "./RoleToggleSwitch";
 import SyncMain from "./SyncMain";
-
 
 const DashboardPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
