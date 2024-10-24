@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors"; // Import CORS middleware
-import connectDB from "./config/db";
-import inventoryRoutes from "./routes/inventoryRoutes";
+import connectDB from "./src/config/db";
+import inventoryRoutes from "./src/routes/inventoryRoutes";
 import dotenv from "dotenv";
 
 dotenv.config();

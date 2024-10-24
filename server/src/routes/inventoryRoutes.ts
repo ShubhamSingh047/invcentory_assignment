@@ -1,13 +1,14 @@
-import express from "express";
+// src/routes/inventoryRoutes.ts
+import { Router } from "express";
 import {
   syncInventory,
   getProducts,
   updateProduct,
   deleteProduct,
 } from "../controllers/inventoryController";
-import { isAdmin } from "../middleware/authMiddleware"; // Import isAdmin middleware
+import { isAdmin } from "../middleware/authMiddleware";
 
-const router = express.Router();
+const router = Router();
 
 // Public route: Get all products
 router.get("/", getProducts);
