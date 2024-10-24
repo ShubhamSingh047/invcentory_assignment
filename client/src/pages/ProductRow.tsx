@@ -32,7 +32,7 @@ const ProductRow: React.FC<ProductRowProps> = ({ product }) => {
 
     try {
       setIsDeleting(true); // Start loading state
-      await deleteProduct(product._id, "user"); // Call the DELETE API
+      await deleteProduct(product._id, role); 
 
       // Dispatch action to remove the product from the Redux store
       dispatch(deleteProductFromState(product._id));
